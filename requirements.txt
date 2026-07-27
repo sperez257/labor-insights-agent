@@ -4,6 +4,7 @@ langchain-community
 langchain-experimental
 langchain_huggingface
 langchain_groq
+streamlit
 
 unstructured[pdf]
 unstructured_inference

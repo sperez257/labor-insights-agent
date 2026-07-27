@@ -1,78 +1,68 @@
-import os
-from dotenv import load_dotenv
-# from langchain_community.document_loaders import DirectoryLoader
-# from langchain_community.vectorstores import InMemoryVectorStore
-# from langchain_experimental.text_splitter import SemanticChunker
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
-from langchain_groq import ChatGroq
-from langchain_classic.globals import set_debug
-# from pinecone import Pinecone
-from langchain_pinecone import PineconeVectorStore
+import streamlit as st
+from herramientas import get_model, get_retriever, answer_pdf_question, build_rag_chain
 
-# Debbuger
-set_debug(True)
+@st.cache_resource
+def cached_model():
+    return get_model()
 
+@st.cache_resource
+def cached_retriever():
+    return get_retriever()
 
-load_dotenv()
-API_KEY_GROQ = os.getenv("API_KEY_GROQ")
-MODEL_NAME_GROQ = os.getenv("MODEL_NAME_GROQ")
-API_KEY_PINECONE = os.getenv('API_KEY_PINECONE')
+@st.cache_resource
+def cached_rag_chain():
+    model = get_model()
+    retriever = get_retriever()
 
-# loader = DirectoryLoader("./Documentos/", glob="*.pdf")
-# all_docs = loader.load()
-# print(f'PDFs cargados: {len(all_docs)}')
+    return build_rag_chain(
+        model,
+        retriever
+    )
 
-# # Chunking semántico
-# hf_embeddings = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-small")
-# semantic_hf_splitter = SemanticChunker(hf_embeddings)
-# semantic_hf_chunks = semantic_hf_splitter.split_documents(all_docs)
-# print(f'Chunks: {len(semantic_hf_chunks)}')
+st.set_page_config(page_title="Herramienta IA Empleo Perú", layout="wide")
 
-# Vector Store
-hf_embeddings = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-small")
-
-vector_store = PineconeVectorStore(
-    index_name="langchain-rag",
-    embedding=hf_embeddings,
-    pinecone_api_key=API_KEY_PINECONE
+st.markdown(
+    """
+    <style>
+        .stApp {background-color: #f8f9fb;}
+        .title {font-size: 2.25rem; font-weight: 700; color: #0f172a;}
+        .subtitle {color: #475569; margin-bottom: 1rem;}
+        .stTextArea>div>div>textarea {font-size: 1rem;}
+        .stButton>button {background-color: #0f172a; color: white;}
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
-# vector_store.add_documents(semantic_hf_chunks)
+def main():
+    st.title("Herramienta RAG de Empleo Perú")
+    st.markdown("Una interfaz minimalista para hacer preguntas a los documentos PDF indexados en Pinecone.")
 
-retriver = vector_store.as_retriever(search_kwargs={'k': 3})
+    with st.sidebar:
+        st.header("Guía rápida")
+        st.markdown("- Pregunta sobre los documentos de empleo en Perú.")
+        st.markdown("- El agente usa solo la base de conocimiento RAG en Pinecone.")
+        st.markdown("- Evita consultas relacionadas con archivos CSV en esta versión.")
+        st.markdown("---")
+        st.markdown("### Objetivo")
+        st.markdown("Investigar tendencias, políticas y datos de empleo con respuestas claras y enfocadas.")
 
-# Prompt
-model = ChatGroq(api_key=API_KEY_GROQ, model='llama-3.3-70b-versatile')
+    question = st.text_area("Escribe tu pregunta", height=180)
 
-prompt = ChatPromptTemplate(
-    [
-        ("system","Responde utilizando exclusivamente el contenido que se anexa a continuación: \nContexto:\n{contexto}"),
-        ("human", "{query}")
-    ]
-)
+    if st.button("Consultar agente"):
+        if not question.strip():
+            st.warning("Por favor ingresa una pregunta antes de enviar.")
+            return
 
-rewriter_prompt_template = """
-Genera la consulta de búsqueda para la base de datos de vectores (Vector DB) a partir de una pregunta del usuario,
-permitiendo una respuesta más precisa por medio de la búsqueda semántica.
-Basta devolver la consulta revisada del Vector DB, entre comillas.
+        with st.spinner("Consultando la base de conocimiento RAG..."):
+            answer = answer_pdf_question(question, cached_rag_chain())
 
-# PREGUNTA DEL USUARIO: {user_question}
-# CONSULTA REVISADA DEL VECTOR DB:
-"""
+        st.markdown("### Respuesta del agente")
+        st.write(answer)
 
-rewriter_prompt = PromptTemplate.from_template(rewriter_prompt_template)
-rewriter_chain = rewriter_prompt | model | StrOutputParser()
+    st.markdown("---")
+    st.markdown("Hecho para investigadores y analistas que desean una experiencia limpia y sin distracciones.")
 
-rag_chain = (
-    {
-        "contexto": RunnablePassthrough() | rewriter_chain | retriver,
-        "query": RunnablePassthrough()
-    } | prompt | model | StrOutputParser()
-)
 
-pregunta = "Cual es el propósito de la investigación?"
-
-rag_chain.invoke(pregunta)
+if __name__ == "__main__":
+    main()
