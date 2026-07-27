@@ -1,0 +1,13 @@
+langchain
+langchain-core
+langchain-community
+langchain-experimental
+langchain_huggingface
+langchain_groq
+
+unstructured[pdf]
+unstructured_inference
+sentence-transformers
+
+pinecone
+langchain_pinecone
