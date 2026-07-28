@@ -30,7 +30,79 @@ Labor Insights Agent está diseñado para investigadores y analistas que desean 
 - Interacción mediante una interfaz web con Streamlit.
 - Carga de variables de entorno con `python-dotenv`.
 
-## 3. Fuentes de conocimiento
+## 3. Ejemplos de preguntas y respuestas
+
+### Pregunta 1
+**¿Cuál es el objetivo de la EPEN y qué información busca recopilar?**
+
+**Respuesta:**
+El objetivo de la Encuesta Permanente de Empleo Nacional (EPEN) es producir y difundir estadísticas oficiales del mercado laboral a nivel nacional y en 27 ciudades del Perú. La EPEN busca recopilar información sobre el comportamiento de los indicadores del mercado laboral, incluyendo variables como:
+
+- Características de los miembros del hogar
+- Empleo
+- Ingreso del trabajador independiente y productor agropecuario
+- Condición de actividad
+- Ingreso por trabajo de la ocupación principal
+- Pago en especie
+- Desocupados
+- Aseguramiento en salud
+- Educación
+- Migración
+- Discapacidad
+- Etnicidad
+
+La EPEN se ejecuta en el ámbito nacional en los 24 departamentos del país y la Provincia Constitucional del Callao, y se realiza en el periodo comprendido de enero a diciembre del 2026. La encuesta tiene un total de 152 preguntas, distribuidas en diferentes capítulos, y busca proporcionar información valiosa para entender el comportamiento del mercado laboral en el Perú.
+
+### Pregunta 2
+**¿Qué variables necesito para analizar el empleo según ciudad, sexo y edad?**
+
+**Respuesta:**
+Para analizar el empleo según ciudad, sexo y edad, necesitarías las siguientes variables:
+
+1. **Ciudad**: La variable que indique la ciudad de residencia de la persona. En el texto disponible no se menciona explícitamente una variable para la ciudad; es posible que esta información se encuentre en algún metadato o en documentos relacionados a ciudades.
+2. **Sexo**: La variable `207. Sexo` con código 1 para Hombre y 2 para Mujer.
+3. **Edad**: La variable `208. Qué edad tiene en años cumplidos años` con un rango de 1 a 115 años.
+4. **Condición de actividad**: La variable `303. La semana pasada, tuvo Ud. Algún trabajo (sin contar los quehaceres del hogar)` con código 1 para Sí y 2 para No, para determinar si la persona está empleada.
+5. **Ocupación principal**: Las variables `308. Cuál es la ocupación principal que desempeñó - Código` y `309. A qué se dedica el negocio, organismo o empresa en la que trabajó en su ocupación principal. Código` para detalles sobre el tipo de empleo.
+6. **Tamaño de la empresa**: La variable `317. En su trabajo, negocio o empresa, incluyéndose Ud., laboraron` para conocer el tamaño de la empresa donde trabaja.
+
+Con estas variables, se puede analizar el empleo según ciudad (si esa información está disponible), sexo y edad, considerando la condición de actividad, el tipo de ocupación y el tamaño de la empresa.
+
+### Pregunta 3
+**¿Cómo se define y registra la situación laboral de una persona según las variables disponibles?**
+
+**Respuesta:**
+La situación laboral se define y registra mediante varias dimensiones:
+
+1. **Ocupación principal**: Se registra con variables como:
+   - `C308_COD`: Código de la ocupación principal.
+   - `C309_COD`: Código de la actividad económica principal.
+   - `C310`: Tipo de ocupación principal (empleador, trabajador independiente, empleado, etc.).
+   - `C311`: Tipo de entidad donde trabaja (fuerzas armadas, administración pública, empresa privada, etc.).
+2. **Horas trabajadas**: Se registra mediante:
+   - `C318_1` a `C318_7`: Horas trabajadas en cada día de la semana.
+   - `C318_T`: Total de horas trabajadas en la semana.
+3. **Ingreso**: Se registra mediante:
+   - `C339_1`: Ingreso total en la ocupación principal.
+   - `C342`: Ganancia neta en la ocupación principal.
+4. **Ocupación secundaria**: Se registra mediante:
+   - `C330`: Normalmente trabaja en la ocupación secundaria.
+   - `C331`: Número de horas trabajadas en la ocupación secundaria.
+   - `C333`: Ingreso total en la ocupación secundaria.
+5. **Búsqueda de empleo**: Se registra mediante:
+   - `C335`: Buscó empleo en la semana pasada.
+   - `C352`: Hizo algo para conseguir trabajo en la semana pasada.
+6. **Desocupación**: Se registra mediante:
+   - `C352`: Hizo algo para conseguir trabajo en la semana pasada.
+   - `C353`: Qué estuvo haciendo la semana pasada.
+   - `C354`: Quería trabajar en la semana pasada.
+   - `C355`: Estuvo disponible para trabajar en la semana pasada.
+7. **Inactividad**: Se registra mediante:
+   - `C356`: Por qué no buscó trabajo en la semana pasada.
+
+En resumen, la situación laboral se define a partir de variables que capturan la ocupación principal, las horas trabajadas, el ingreso, la ocupación secundaria, la búsqueda de empleo, la desocupación y la inactividad.
+
+## 4. Fuentes de conocimiento
 
 El proyecto utiliza como fuente principal documentos indexados en Pinecone relacionados con la Encuesta Permanente de Empleo Nacional (EPEN).
 
@@ -43,7 +115,7 @@ El proyecto utiliza como fuente principal documentos indexados en Pinecone relac
 
 - Aunque la interfaz sugiere `Datos CSV (Próximamente)`, en la versión actual no hay integración funcional con archivos CSV en el flujo de consulta.
 
-## 4. Arquitectura de la solución
+## 5. Arquitectura de la solución
 
 ```mermaid
 flowchart TD
@@ -79,7 +151,7 @@ flowchart TD
 7. `ChatGroq` genera la respuesta.
 8. La respuesta se presenta en Streamlit.
 
-## 5. Tecnologías y herramientas utilizadas
+## 6. Tecnologías y herramientas utilizadas
 
 | Tecnología | Uso en el proyecto |
 |---|---|
@@ -95,7 +167,7 @@ flowchart TD
 | ChatGroq | Cliente LLM usado en el proyecto |
 | python-dotenv | Carga de variables de entorno |
 
-## 6. Estructura del proyecto
+## 7. Estructura del proyecto
 
 ```text
 labor-insights-agent/
@@ -122,7 +194,7 @@ labor-insights-agent/
 - No se encontró un archivo `.env.example` en el repositorio actual.
 - El flujo de consulta RAG está implementado en `herramientas.py` y consumido desde `app.py`.
 
-## 7. Variables de entorno requeridas
+## 8. Variables de entorno requeridas
 
 El proyecto usa las siguientes variables de entorno:
 
@@ -130,7 +202,7 @@ El proyecto usa las siguientes variables de entorno:
 - `MODEL_NAME_GROQ`
 - `API_KEY_PINECONE`
 
-## 8. Uso básico
+## 9. Uso básico
 
 1. Instala dependencias:
    ```bash
@@ -143,9 +215,3 @@ El proyecto usa las siguientes variables de entorno:
    ```bash
    streamlit run app.py
    ```
-
-## 9. Estado actual del proyecto
-
-- La versión actual es una interfaz RAG funcional para consultas sobre documentos indexados en Pinecone.
-- El soporte CSV se muestra como planificado en la UI, pero no está integrado en el flujo de consulta actual.
-- No hay archivo `.env.example` en el repositorio actual.
