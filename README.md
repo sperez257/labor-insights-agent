@@ -215,3 +215,13 @@ El proyecto usa las siguientes variables de entorno:
    ```bash
    streamlit run app.py
    ```
+
+## 10. Evidencia del Deploy en OCI
+
+La aplicación está desplegada y funcionando en la nube en el siguiente enlace público:
+
+https://labor-insights-agent.streamlit.app/
+
+A continuación se muestra una captura de pantalla que evidencia que la aplicación está ejecutándose correctamente:
+
+<img width="1869" height="990" alt="image" src="https://github.com/user-attachments/assets/2f64b844-c486-497b-a87b-cc14c9a8893c" />
