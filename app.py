@@ -36,9 +36,9 @@ st.markdown(
         .sidebar-tag-green {background-color: #ecfdf5; border-color: #22c55e;}
         .sidebar-tag-yellow {background-color: #fef3c7; border-color: #f59e0b;}
         .sidebar-card {border: 1px solid #e2e8f0; border-radius: 1rem; padding: 0.9rem 1rem; margin-bottom: 0.75rem; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);}
-        .sidebar-card-title {font-size: 0.96rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;}
+        .sidebar-card-title {font-size: 0.96rem; font-weight: 700; margin-bottom: 0.35rem;}
         .sidebar-card-text {font-size: 0.9rem; line-height: 1.5;}
-        .sidebar-badge {display: inline-flex; align-items: center; justify-content: center; padding: 0.25rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #92400e; background: #fef3c7; border: 1px solid #f59e0b;}
+        .sidebar-upcoming-title {font-size: 0.9rem; font-weight: 700; color: #ff7300; text-transform: uppercase; margin: 0.9rem 0 0.45rem 0;}
     </style>
     """,
     unsafe_allow_html=True,
@@ -61,9 +61,10 @@ def main():
         st.markdown("<div class='sidebar-heading'>¿Qué puedo hacer?</div>", unsafe_allow_html=True)
         st.markdown(
             "<div class='sidebar-card'><div class='sidebar-card-title'>📚 Consultar documentación</div><div class='sidebar-card-text'>Responde preguntas sobre metodología, variables y conceptos.</div></div>"
-            "<div class='sidebar-card'><div class='sidebar-card-title'>📊 Analizar indicadores <span class='sidebar-badge'>Próximamente</span></div><div class='sidebar-card-text'>Interpreta métricas y resultados disponibles.</div></div>"
-            "<div class='sidebar-card'><div class='sidebar-card-title'>🏙️ Comparar ciudades <span class='sidebar-badge'>Próximamente</span></div><div class='sidebar-card-text'>Identifica diferencias entre ciudades investigadas.</div></div>"
-            "<div class='sidebar-card'><div class='sidebar-card-title'>🔍 Generar insights <span class='sidebar-badge'>Próximamente</span></div><div class='sidebar-card-text'>Resume tendencias y patrones encontrados en los datos.</div></div>",
+            "<div class='sidebar-upcoming-title'>Próximamente</div>"
+            "<div class='sidebar-card'><div class='sidebar-card-title'>📊 Analizar indicadores</div><div class='sidebar-card-text'>Interpreta métricas y resultados disponibles.</div></div>"
+            "<div class='sidebar-card'><div class='sidebar-card-title'>🏙️ Comparar ciudades</div><div class='sidebar-card-text'>Identifica diferencias entre ciudades investigadas.</div></div>"
+            "<div class='sidebar-card'><div class='sidebar-card-title'>🔍 Generar insights</div><div class='sidebar-card-text'>Resume tendencias y patrones encontrados en los datos.</div></div>",
             unsafe_allow_html=True,
         )
         st.markdown("</div>", unsafe_allow_html=True)
